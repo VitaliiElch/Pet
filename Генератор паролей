@@ -1,0 +1,47 @@
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Добро пожаловать в генератор паролей!");
+
+        Console.Write("Введите длину пароля: ");
+        int length = int.Parse(Console.ReadLine());
+
+        Console.Write("Включить цифры? (y/n): ");
+        bool includeDigits = Console.ReadLine().ToLower() == "y";
+
+        Console.Write("Включить специальные символы? (y/n): ");
+        bool includeSpecialChars = Console.ReadLine().ToLower() == "y";
+
+        Console.Write("Включить заглавные буквы? (y/n): ");
+        bool includeUppercase = Console.ReadLine().ToLower() == "y";
+
+        string password = GeneratePassword(length, includeDigits, includeSpecialChars, includeUppercase);
+        Console.WriteLine($"Ваш пароль: {password}");
+    }
+
+    static string GeneratePassword(int length, bool includeDigits, bool includeSpecialChars, bool includeUppercase)
+    {
+        const string lowercase = "abcdefghijklmnopqrstuvwxyz";
+        const string uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const string digits = "0123456789";
+        const string specialChars = "!@#$%^&*()-_=+[]{}|;:,.<>?";
+
+        StringBuilder allowedChars = new StringBuilder(lowercase);
+
+        if (includeUppercase) allowedChars.Append(uppercase);
+        if (includeDigits) allowedChars.Append(digits);
+        if (includeSpecialChars) allowedChars.Append(specialChars);
+
+        Random random = new Random();
+        StringBuilder password = new StringBuilder();
+
+        for (int i = 0; i < length; i++)
+        {
+            int index = random.Next(allowedChars.Length);
+            password.Append(allowedChars[index]);
+        }
+
+        return password.ToString();
+    }
+}
